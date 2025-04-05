@@ -61,14 +61,22 @@ const run = async () => {
         expiresIn: "10h",
       });
       res
-        .cookie("token", token, { httpOnly: true, secure: false })
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+        })
         .send({ success: true });
     });
 
     // logout the user
     app.post("/logout", (req, res) => {
       res
-        .clearCookie("token", { httpOnly: true, secure: false })
+        .clearCookie("token", {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+        })
         .send({ success: true });
     });
 
