@@ -166,7 +166,16 @@ const run = async () => {
     });
 
     // get all orders only for logged in user
-    
+    app.get("/my_orders", verifyToken, async (req, res) => {
+      const email = req.query.email;
+      // console.log(email);
+      if (req.user?.email !== req.query?.email) {
+        return res.status(403).send({ message: "forbidden access" });
+      }
+      const query = { user_email: email };
+      const orders = await orders_collection.find(query).toArray();
+      res.send(orders);
+    });
 
     // delete specific my orders by id
     
