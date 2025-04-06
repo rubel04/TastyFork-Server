@@ -110,7 +110,6 @@ const run = async () => {
     // get my foods for specific and logged in user
     app.get("/my_foods", verifyToken, async (req, res) => {
       const email = req.query.email;
-      // console.log(email);
       if (req.user?.email !== req.query?.email) {
         return res.status(403).send({ message: "forbidden access" });
       }
